@@ -1,23 +1,22 @@
 import React from "react";
-import { FaMoneyBillAlt, FaMoneyCheckAlt, FaCoins, FaPen, FaTrash, FaPlus } from "react-icons/fa";
+import { FaMoneyBillAlt, FaMoneyCheckAlt, FaCoins, FaPen, FaTrash, FaPlus, FaCheck, FaArrowLeft } from "react-icons/fa";
+
+const icons = {
+  budget: FaMoneyBillAlt,
+  expenses: FaMoneyCheckAlt,
+  balance: FaCoins,
+  edit: FaPen,
+  delete: FaTrash,
+  plus: FaPlus,
+  check: FaCheck,
+  back: FaArrowLeft,
+};
 
 const Icon = ({ name, size, className }) => {
-    switch (name) {
-        case "budget":
-            return <FaMoneyBillAlt className={`${className} text-[${size}rem]`} />;
-        case "expenses":
-            return <FaMoneyCheckAlt className={`${className} text-[${size}rem]`} />;
-        case "balance":
-            return <FaCoins className={`${className} text-[${size}rem]`} />;
-        case "edit":
-            return <FaPen className={`${className} text-[${size}rem]`} />;
-        case "delete":
-            return <FaTrash className={`${className} text-[${size}rem]`} />;
-        case "plus":
-            return <FaPlus className={`${className} text-[${size}rem]`} />;
-        default:
-            return null;
-    }
+  const IconComponent = icons[name];
+  if (!IconComponent) return null;
+
+  return <IconComponent className={`${className} text-[${size}rem] transition-colors`} />;
 };
 
 export default Icon;

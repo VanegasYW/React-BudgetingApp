@@ -27,10 +27,7 @@ const CreateBudget = ({ data, isLoading, budgetSelected, budgetView }) => {
         }
     }, [showUpdateForm]);
 
-    const handleAccept = () => {
-        budgetView(true)
-        isLoading(true);
-    };
+    const handleAccept = () => budgetView(true);
 
     const handleShowForm = () => {
         setShowForm(true);
@@ -64,10 +61,12 @@ const CreateBudget = ({ data, isLoading, budgetSelected, budgetView }) => {
     }
 
     const handleCreate = (e) => {
-        const title = budgetTitleInput.current.value;
-        const value = budgetValueInput.current.value;
+        const title = budgetTitleInput?.current.value;
+        const value = budgetValueInput?.current.value;
 
         if (!isNaN(value)) {
+            setNan(false)
+            
             if (showUpdateForm) {
                 updateBudget(selectedBudgetId, { balance: value, budget: { title, value } })
                     .then((budget) => {
@@ -88,7 +87,6 @@ const CreateBudget = ({ data, isLoading, budgetSelected, budgetView }) => {
                         console.log(error);
                     });
             }
-            setNan(false)
         } else {
             setNan(true)
         }

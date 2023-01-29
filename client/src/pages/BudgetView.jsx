@@ -17,7 +17,7 @@ const inputsExpense = [
 const BudgetView = ({ id }) => {
     const [isLoadingTable, setIsLoadingTable] = useState(false)
     const [isLoadingGeneral, setIsLoadingGeneral] = useState(true)
-    const [nan, setNan] = useState(false)
+    const [nan, setNaN] = useState(false)
     const [data, setData] = useState([])
     const [expenseValue, setExpenseValue] = useState(0)
     const [budgetValue, setBudgetValue] = useState(0)
@@ -43,15 +43,21 @@ const BudgetView = ({ id }) => {
                 setBalance(budgetValue - expenseValue)
                 setIsLoadingGeneral(false)
                 setIsLoadingTable(false)
-                updateBudget(id, { balance: budgetValue - expenseValue })
+                updateBudget(id, { balance })
                     .catch((error) => {
-                        console.log(error);
+                        console.error(error);
                     });
             }).catch(error => () => {
-                console.log(error);
+                console.error(error);
             })
 
     }, [isLoadingGeneral, isLoadingTable])
+
+    const updateBudgetFunc = (object, callback) => updateBudget(id, object)
+        .then(callback)
+        .catch((error) => {
+            console.error(error);
+        });
 
     if (deleteExpense) {
         setDeleteExpense(false)
@@ -59,52 +65,39 @@ const BudgetView = ({ id }) => {
 
         expensesDelete = expensesDelete.filter(({ title }) => title != expensesDelete[expenseSelected].title);
 
-        updateBudget(id, { expenses: expensesDelete })
-            .then(() => {
-                setIsLoadingTable(true)
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
+        updateBudgetFunc({ expenses: expensesDelete }, () =>
+            setIsLoadingTable(true)
+        )
     }
 
     const handleCreateExpense = (e) => {
-        const title = expenseTitleInput.current.value;
-        const value = expenseValueInput.current.value;
+        const title = expenseTitleInput?.current.value;
+        const value = expenseValueInput?.current.value;
 
         if (!isNaN(value)) {
+            setNaN(false)
+
             if (updateExpense) {
-                let expensesUpdate = data.expenses
+                let expensesUpdate = data?.expenses
                 expensesUpdate[expenseSelected].title = title
                 expensesUpdate[expenseSelected].value = value
 
-                updateBudget(id, { expenses: expensesUpdate })
-                    .then(() => {
-                        expenseTitleInput.current.value = "";
-                        expenseValueInput.current.value = "";
-                        setUpdateExpense(false)
-                        setIsLoadingTable(true)
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-                setNan(false)
+                updateBudgetFunc({ expenses: expensesUpdate }, () => {
+                    expenseTitleInput.current.value = "";
+                    expenseValueInput.current.value = "";
+                    setUpdateExpense(false)
+                    setIsLoadingTable(true)
+                })
             } else {
-                updateBudget(id, { expenses: [...data?.expenses, { title, value }] })
-                    .then(() => {
-                        expenseTitleInput.current.value = "";
-                        expenseValueInput.current.value = "";
-                        setIsLoadingTable(true)
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
 
-                setNan(false)
+                updateBudgetFunc({ expenses: [...data?.expenses, { title, value }] }, () => {
+                    expenseTitleInput.current.value = "";
+                    expenseValueInput.current.value = "";
+                    setIsLoadingTable(true)
+                })
             }
         } else {
-            setNan(true)
+            setNaN(true)
         }
 
         e.preventDefault()
@@ -112,27 +105,24 @@ const BudgetView = ({ id }) => {
 
     const handleEditBudgetValue = (e) => {
         const title = data?.budget.title;
-        const currentValue = data.budget.value;
-        const addValue = budgetValueInput.current.value;
+        const currentValue = data?.budget.value;
+        const addValue = budgetValueInput?.current.value;
 
         if (!isNaN(addValue)) {
-            setNan(false)
+            setNaN(false)
 
-            const addValue = budgetValueInput.current.value;
+            const addValue = budgetValueInput?.current.value;
             const value = parseFloat(currentValue) + parseFloat(addValue)
 
             setBudgetValue(value)
 
-            updateBudget(id, { balance: balance, budget: { title, value } })
-                .then(() => {
-                    budgetValueInput.current.value = ""
-                    setIsLoadingGeneral(true)
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            updateBudgetFunc({ balance: balance, budget: { title, value } }, () => {
+                budgetValueInput.current.value = ""
+                setIsLoadingGeneral(true)
+            })
+
         } else {
-            setNan(true)
+            setNaN(true)
         }
 
         e.preventDefault()
@@ -156,7 +146,7 @@ const BudgetView = ({ id }) => {
                 />
             </button>
             <div className="flex justify-center items-center font-bold text-[1.5rem] max-sm:flex-col">
-                <p className="flex m-10 max-sm:mb-1">
+                <p className={`flex m-10 max-sm:mb-1 ${balance < 0 ? "text-red-500" : ""}`}>
                     <Icon name="balance" size={2} className="mr-2" /> Balance: ${balance}
                 </p>
                 <p className="flex m-10 max-sm:mb-1 text-green-500 ">

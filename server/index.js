@@ -1,6 +1,6 @@
-import express from 'express';
-import db from './db/config.js';
-import expenseRoutes from './routes/expense.routes.js';
+import express from "express";
+import db from "./db/config.js";
+import expenseRoutes from "./routes/expense.routes.js";
 
 // Set the port for the server to the value specified in the PORT environment variable, or 3000 if the PORT variable is not set
 const PORT = process.env.PORT || 3000;
@@ -24,7 +24,7 @@ db.then((response) => {
         next();
     });
 
-    app.use('/api/expenses', expenseRoutes);
+    app.use("/api/expenses", expenseRoutes);
 
     app.listen(PORT, () => {
         console.log(`Server listening on port ${PORT}`);

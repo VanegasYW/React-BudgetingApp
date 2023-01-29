@@ -28,7 +28,10 @@ const Table = ({ expenseSelected, updateExpense, deleteExpense, refs, expenses, 
                     </tr>
                 </thead>
                 <tbody className="block h-80 overflow-x-hidden overflow-y-auto">
-                    {loading && <Loading color="red" /> }
+                    {loading && 
+                    <tr className="flex justify-center">
+                        <td><Loading color="red" /></td>
+                    </tr>}
                     {(!loading && expenses != []) && expenses.map(({ title, value }, index) => (
                         <tr key={index} className="font-bold">
                             <td className="px-6 py-2 text-red-500">{title}</td>

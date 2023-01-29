@@ -12,11 +12,15 @@ db.then((response) => {
     const app = express();
 
     app.use(express.json());
-
+    
     app.use((req, res, next) => {
+        // Allow any origin to access the API
         res.header("Access-Control-Allow-Origin", "*");
+        // Allow to this headers to be sent with requests
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
+        // Allow the following HTTP methods to be used
         res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+        // Continue to the next middleware or route handler
         next();
     });
 

@@ -12,6 +12,7 @@ const CreateBudget = ({ data, isLoading, budgetSelected, budgetView }) => {
     const [showBackButton, setShowBackButton] = useState(false);
     const [selectedBudgetId, setSelectedBudgetId] = useState(data[0]?._id);
     const [selectedBudget, setSelectedBudget] = useState(null);
+    const [deleteConfirm, setDeleteConfirm] = useState(false);
 
     const budgetTitleInput = useRef(null);
     const budgetValueInput = useRef(null);
@@ -26,6 +27,8 @@ const CreateBudget = ({ data, isLoading, budgetSelected, budgetView }) => {
             setShowBackButton(true);
         }
     }, [showUpdateForm]);
+
+    const toggleDeleteConfirm = () => setDeleteConfirm(val => val = !val)
 
     const handleAccept = () => budgetView(true);
 
@@ -66,7 +69,7 @@ const CreateBudget = ({ data, isLoading, budgetSelected, budgetView }) => {
 
         if (!isNaN(value)) {
             setNan(false)
-            
+
             if (showUpdateForm) {
                 updateBudget(selectedBudgetId, { balance: value, budget: { title, value } })
                     .then((budget) => {
@@ -113,7 +116,7 @@ const CreateBudget = ({ data, isLoading, budgetSelected, budgetView }) => {
                             />
                         </button>
                         <button
-                            onClick={handleDelete}
+                            onClick={toggleDeleteConfirm}
                             type="button"
                             aria-label="delete"
                             title="delete"
@@ -134,9 +137,9 @@ const CreateBudget = ({ data, isLoading, budgetSelected, budgetView }) => {
                     </div>
                     <div className="self-end mt-12">
                         <button
-                            onClick={handleAccept}
+                            onClick={!deleteConfirm ? handleAccept : handleDelete}
                             type="button"
-                            className="transition-colors bg-teal-500 hover:bg-teal-700 p-5 mb-5 rounded block"
+                            className={`transition-colors ${!deleteConfirm ? "bg-teal-500 hover:bg-teal-700" : "bg-red-500 hover:bg-red-700"} p-5 mb-5 rounded block`}
                             aria-label="create new budget"
                             title="create new budget"
                         >
@@ -147,14 +150,14 @@ const CreateBudget = ({ data, isLoading, budgetSelected, budgetView }) => {
                             />
                         </button>
                         <button
-                            onClick={handleShowForm}
+                            onClick={!deleteConfirm ? handleShowForm: toggleDeleteConfirm}
                             type="button"
-                            className="self-end transition-colors bg-green-500 hover:bg-green-700 p-5 rounded"
+                            className={`self-end transition-colors p-5 rounded  ${!deleteConfirm ? "bg-green-500 hover:bg-green-700" : "bg-blue-500 hover:bg-blue-700"}`}
                             aria-label="create new budget"
                             title="create new budget"
                         >
                             <Icon
-                                name="plus"
+                                name={!deleteConfirm ? "plus": "back"}
                                 size={1}
                                 className="text-white"
                             />

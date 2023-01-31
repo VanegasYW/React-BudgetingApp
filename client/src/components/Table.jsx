@@ -30,7 +30,7 @@ const Table = ({ expenseSelected, updateExpense, deleteExpense, refs, expenses, 
                 <tbody className="block h-80 overflow-x-hidden overflow-y-auto">
                     {loading && 
                     <tr className="flex justify-center">
-                        <td><Loading color="red" /></td>
+                        <td><Loading color="border-red-500" /></td>
                     </tr>}
                     {(!loading && expenses != []) && expenses.map(({ title, value }, index) => (
                         <tr key={index} className="font-bold">

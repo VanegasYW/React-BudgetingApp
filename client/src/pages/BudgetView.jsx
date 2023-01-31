@@ -130,7 +130,6 @@ const BudgetView = ({ id }) => {
 
     return (
         <div className="container m-auto">
-            {isLoadingGeneral && <Loading color="teal" />}
             <h1 className="text-center text-teal-500 text-[2rem] font-bold ">Budgeting App</h1>
             <button
                 onClick={() => location.reload()}
@@ -146,15 +145,18 @@ const BudgetView = ({ id }) => {
                 />
             </button>
             <div className="flex justify-center items-center font-bold text-[1.5rem] max-sm:flex-col">
-                <p className={`flex m-10 max-sm:mb-1 ${balance < 0 ? "text-red-500" : ""}`}>
-                    <Icon name="balance" size={2} className="mr-2" /> Balance: ${balance}
-                </p>
-                <p className="flex m-10 max-sm:mb-1 text-green-500 ">
-                    <Icon name="budget" size={2} className="mr-2" /> Budget: ${budgetValue}
-                </p>
-                <p className="flex m-10 max-sm:mb-1 text-red-500">
-                    <Icon name="expenses" size={2} className="mr-2" /> Expenses: -${expenseValue}
-                </p>
+                {isLoadingGeneral && <Loading color="border-teal-500" />}
+                {!isLoadingGeneral && <div className="flex max-sm:flex-col">
+                    <p className={`flex m-10 max-sm:mb-1 ${balance < 0 ? "text-red-500" : ""}`}>
+                        <Icon name="balance" size={2} className="mr-2" /> Balance: ${balance}
+                    </p>
+                    <p className="flex m-10 max-sm:mb-1 text-green-500 ">
+                        <Icon name="budget" size={2} className="mr-2" /> Budget: ${budgetValue}
+                    </p>
+                    <p className="flex m-10 max-sm:mb-1 text-red-500">
+                        <Icon name="expenses" size={2} className="mr-2" /> Expenses: -${expenseValue}
+                    </p>
+                </div>}
             </div>
             <div className="flex justify-evenly max-md:flex-col max-md:px-12 ">
                 <div className="mt-2">

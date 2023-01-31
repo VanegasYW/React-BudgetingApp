@@ -21,7 +21,9 @@ const App = () => {
 
     return (
         <div>
-            { isLoading && <Loading color="teal" /> }
+            {isLoading && <div className="w-full h-screen flex align-center justify-center items-center">
+                <Loading color="border-teal-500" />
+            </div>  }
             {(!isLoading && !showBudgetView) &&
                 <CreateBudget data={budgets} isLoading={setIsLoading} budgetSelected={setBudgetSelected} budgetView={setShowBudgetView} />
             }

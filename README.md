@@ -14,3 +14,6 @@ npm i
 - Start the server
 ```
 npm start
+```
+
+### 🛠 [Stack Used](techstack.md)

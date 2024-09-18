@@ -7,8 +7,6 @@ const PORT = process.env.PORT || 3000;
 
 // Wait for the connection to the database to be established
 db.then((response) => {
-    console.log(response);
-
     const app = express();
 
     app.use(express.json());

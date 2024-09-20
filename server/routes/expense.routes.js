@@ -1,4 +1,5 @@
 import {Router} from 'express';
+import RateLimit from 'express-rate-limit';
 import {
   getExpenses,
   getExpensesById,
@@ -8,6 +9,15 @@ import {
 } from '../controllers/expense.controllers.js';
 
 const router = Router();
+
+// Configure rate limiter: maximum of 100 requests per 15 minutes
+const limiter = RateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // max 100 requests per windowMs
+});
+
+// Apply rate limiter to all expense routes
+router.use(limiter);
 
 // Get all expenses
 router.get('/', getExpenses);

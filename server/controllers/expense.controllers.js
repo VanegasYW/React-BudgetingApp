@@ -35,9 +35,15 @@ export const createExpense = async (req, res) => {
 // Update an expense by id
 export const updateExpense = async (req, res) => {
     try {
+        const allowedUpdates = ['field1', 'field2', 'field3']; // replace with actual fields
+        const updates = Object.keys(req.body);
+        const isValidOperation = updates.every(update => allowedUpdates.includes(update));
+        if (!isValidOperation) {
+            return res.status(400).json({ message: 'Invalid updates!' });
+        }
         const expense = await Expense.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            { $set: req.body },
             { new: true }
         );
         if (expense) {

@@ -16,4 +16,16 @@ npm i
 npm start
 ```
 
+### 🌐 Endpoints (No Authentication Required)
+
+The API provides the following endpoints:
+
+| Method | Endpoint   | Description                     |
+|:-------|:------------|:---------------------------------|
+| `GET`  | `/expenses` | Get all expenses                 |
+| `GET`  | `/expenses/:id` | Get an expense by ID          |
+| `POST` | `/expenses` | Create a new expense             |
+| `PUT`  | `/expenses/:id` | Update an expense by ID       |
+| `DELETE` | `/expenses/:id` | Delete an expense by ID     |
+
 ### 🛠 [Stack Used](techstack.md)
